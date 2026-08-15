@@ -18,7 +18,6 @@ import {
   getAllProductCategories,
   getFeaturedProducts,
   getOnSaleProducts,
-  formatPrice,
 } from "@/lib/woocommerce";
 
 const displayFont = Bodoni_Moda({
@@ -75,6 +74,35 @@ export default async function Home() {
   const spotlight = featuredProducts[0];
   const edit = featuredProducts.slice(0, 4);
 
+  const heroImage = spotlight?.images[0]?.src
+    ? {
+        src: spotlight.images[0].src,
+        alt: spotlight.images[0].alt || spotlight.name,
+      }
+    : { src: curatedSpotlight.image, alt: curatedSpotlight.imageAlt };
+
+  const promoCategory = featuredCategories[0];
+  const promoProduct = edit[1] ?? edit[0];
+  const promoBanner = promoCategory?.image?.src
+    ? {
+        image: promoCategory.image.src,
+        alt: promoCategory.image.alt || promoCategory.name,
+        kicker: "Shop by mood",
+        title: promoCategory.name,
+        href: `/shop/category/${promoCategory.slug}`,
+        cta: "Shop the category",
+      }
+    : promoProduct?.images[0]?.src
+      ? {
+          image: promoProduct.images[0].src,
+          alt: promoProduct.images[0].alt || promoProduct.name,
+          kicker: "Just dropped",
+          title: promoProduct.name,
+          href: `/shop/${promoProduct.slug}`,
+          cta: "Shop this piece",
+        }
+      : null;
+
   return (
     <div className={`${displayFont.variable} brand-page`}>
       {/* Promo bar */}
@@ -84,119 +112,47 @@ export default async function Home() {
         </Container>
       </div>
 
-      <Section className="py-0">
-        <Container className="max-w-6xl px-4 sm:px-6 lg:px-10">
-          <main className="space-y-14 py-8 md:space-y-20 md:py-12">
-            {/* Hero */}
-            <section className="home-reveal relative grid items-stretch gap-6 lg:grid-cols-[1.15fr_0.85fr]">
-              <div className="brand-shell relative flex flex-col justify-center gap-6 overflow-hidden p-6 sm:p-8 lg:p-10">
-                <div className="brand-weave absolute inset-0 opacity-60" />
-                <div className="relative space-y-5">
-                  <p className="brand-kicker flex items-center gap-2">
-                    <Sparkles className="h-3.5 w-3.5" />
-                    Colombo capsule edit
-                  </p>
-                  <h1 className="brand-display text-5xl font-semibold md:text-6xl">
-                    Crafted for tropical days and city nights.
-                  </h1>
-                  <p className="brand-copy max-w-xl text-base md:text-lg">
-                    A modern Sri Lankan clothing storefront with clean tailoring
-                    energy, boutique seasonal drops, and quick paths from
-                    discovery to checkout.
-                  </p>
-                  <div className="flex flex-wrap gap-3">
-                    <Button
-                      asChild
-                      className="brand-btn-primary h-11 rounded-full px-6 text-sm"
-                    >
-                      <Link href="/shop">
-                        Shop New Arrivals
-                        <ArrowRight className="ml-2 h-4 w-4" />
-                      </Link>
-                    </Button>
-                    <Button
-                      asChild
-                      variant="outline"
-                      className="brand-btn-outline h-11 rounded-full px-6 text-sm"
-                    >
-                      <Link href="/shop?sort=popularity">
-                        Browse Best Sellers
-                      </Link>
-                    </Button>
-                  </div>
-                  <div className="flex flex-wrap gap-2 pt-1">
-                    <span className="brand-chip">Workwear lines</span>
-                    <span className="brand-chip">Linen capsule</span>
-                    <span className="brand-chip">Boutique drops</span>
-                  </div>
-                </div>
+      <main>
+        {/* Full-bleed hero banner */}
+        <section className="home-reveal relative flex min-h-[460px] w-full items-end overflow-hidden pb-10 sm:min-h-[520px] sm:pb-14 lg:h-[62vh] lg:max-h-[600px] lg:pb-16">
+          <Image
+            src={heroImage.src}
+            alt={heroImage.alt}
+            fill
+            priority
+            className="object-cover"
+            sizes="100vw"
+          />
+          <div className="brand-hero-scrim absolute inset-0" />
+          <Container className="relative z-10 w-full max-w-none px-4 sm:px-8 lg:px-12 xl:px-16">
+            <div className="space-y-3 text-white">
+              <h1 className="text-3xl font-black italic uppercase leading-[0.9] tracking-tight text-white sm:text-5xl md:text-6xl lg:whitespace-nowrap lg:text-7xl xl:text-8xl">
+                Try it, wear it, love it.
+              </h1>
+              <p className="text-sm text-white/85 sm:text-base">
+                Explore the new capsule
+              </p>
+              <div className="flex flex-wrap gap-2 pt-2">
+                <Link
+                  href="/shop"
+                  className="rounded-md bg-black px-6 py-3 text-xs font-semibold uppercase tracking-wider text-white transition-colors hover:bg-white hover:text-black"
+                >
+                  Shop New Arrivals
+                </Link>
+                <Link
+                  href="/shop?sort=popularity"
+                  className="rounded-md bg-black px-6 py-3 text-xs font-semibold uppercase tracking-wider text-white transition-colors hover:bg-white hover:text-black"
+                >
+                  Shop Best Sellers
+                </Link>
               </div>
+            </div>
+          </Container>
+        </section>
 
-              <div
-                className="home-reveal"
-                style={{ animationDelay: "180ms" }}
-              >
-                {spotlight?.images[0]?.src ? (
-                  <Link
-                    href={`/shop/${spotlight.slug}`}
-                    className="brand-image-frame group relative block h-full min-h-[22rem] w-full"
-                  >
-                    <Image
-                      src={spotlight.images[0].src}
-                      alt={spotlight.images[0].alt || spotlight.name}
-                      fill
-                      className="object-cover"
-                      sizes="(max-width: 1024px) 100vw, 40vw"
-                      priority
-                    />
-                    <div className="brand-image-overlay absolute inset-0" />
-                    <div className="absolute inset-x-0 bottom-0 space-y-1 p-5 text-white">
-                      <p className="text-[0.7rem] font-semibold uppercase tracking-[0.18em] text-white/80">
-                        This week&apos;s spotlight
-                      </p>
-                      <p className="brand-display text-2xl font-semibold">
-                        {spotlight.name}
-                      </p>
-                      <div className="flex items-center gap-2 text-sm font-semibold">
-                        {spotlight.price
-                          ? formatPrice(spotlight.price)
-                          : "Shop the piece"}
-                        <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
-                      </div>
-                    </div>
-                  </Link>
-                ) : (
-                  <Link
-                    href="/shop"
-                    className="brand-image-frame group relative block h-full min-h-[22rem] w-full"
-                  >
-                    <Image
-                      src={curatedSpotlight.image}
-                      alt={curatedSpotlight.imageAlt}
-                      fill
-                      className="object-cover"
-                      sizes="(max-width: 1024px) 100vw, 40vw"
-                      priority
-                    />
-                    <div className="brand-image-overlay absolute inset-0" />
-                    <div className="absolute inset-x-0 bottom-0 space-y-1 p-5 text-white">
-                      <p className="text-[0.7rem] font-semibold uppercase tracking-[0.18em] text-white/80">
-                        This week&apos;s spotlight
-                      </p>
-                      <p className="brand-display text-2xl font-semibold">
-                        {curatedSpotlight.title}
-                      </p>
-                      <div className="flex items-center gap-2 text-sm font-semibold">
-                        {curatedSpotlight.tagline}
-                        <ArrowRight className="h-4 w-4 shrink-0 transition-transform group-hover:translate-x-1" />
-                      </div>
-                    </div>
-                  </Link>
-                )}
-              </div>
-            </section>
-
-            {/* Trust strip */}
+        <Section className="py-0">
+          <Container className="max-w-6xl space-y-14 px-4 py-8 sm:px-6 md:space-y-20 md:py-12 lg:px-10">
+            {/* Trust strip
             <section
               className="home-reveal grid gap-3 sm:grid-cols-2 lg:grid-cols-4"
               style={{ animationDelay: "80ms" }}
@@ -210,7 +166,7 @@ export default async function Home() {
                   </div>
                 </div>
               ))}
-            </section>
+            </section> */}
 
             {/* Category showcase */}
             <section className="space-y-5">
@@ -275,7 +231,42 @@ export default async function Home() {
                 )}
               </div>
             </section>
+          </Container>
+        </Section>
 
+        {/* Full-bleed promo banner */}
+        {promoBanner && (
+          <section className="home-reveal relative flex min-h-[380px] w-full items-end overflow-hidden sm:min-h-[440px]">
+            <Image
+              src={promoBanner.image}
+              alt={promoBanner.alt}
+              fill
+              className="object-cover"
+              sizes="100vw"
+            />
+            <div className="brand-image-overlay absolute inset-0" />
+            <Container className="relative z-10 w-full max-w-6xl px-4 pb-10 sm:px-6 sm:pb-14 lg:px-10">
+              <div className="max-w-md space-y-3 text-white">
+                <p className="text-[0.72rem] font-bold uppercase tracking-[0.2em] text-white/80">
+                  {promoBanner.kicker}
+                </p>
+                <h2 className="brand-display text-3xl font-semibold md:text-4xl">
+                  {promoBanner.title}
+                </h2>
+                <Link
+                  href={promoBanner.href}
+                  className="inline-flex items-center gap-2 text-sm font-semibold text-white underline underline-offset-4"
+                >
+                  {promoBanner.cta}
+                  <ArrowRight className="h-4 w-4" />
+                </Link>
+              </div>
+            </Container>
+          </section>
+        )}
+
+        <Section className="py-0">
+          <Container className="max-w-6xl space-y-14 px-4 py-8 sm:px-6 md:space-y-20 md:py-12 lg:px-10">
             {/* New arrivals */}
             <section className="space-y-5">
               <div
@@ -393,9 +384,9 @@ export default async function Home() {
               </div>
               <NewsletterForm />
             </section>
-          </main>
-        </Container>
-      </Section>
+          </Container>
+        </Section>
+      </main>
     </div>
   );
 }

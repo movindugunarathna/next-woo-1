@@ -4,7 +4,6 @@ import { useState, useEffect } from "react";
 
 import type { Product, ProductVariation, ProductDefaultAttribute } from "@/lib/woocommerce.d";
 import { cn } from "@/lib/utils";
-import { Label } from "@/components/ui/label";
 
 interface VariationSelectorProps {
   product: Product;
@@ -83,7 +82,7 @@ export function VariationSelector({
   }
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-5">
       {product.attributes
         .filter((attr) => attr.variation)
         .map((attribute) => {
@@ -92,7 +91,14 @@ export function VariationSelector({
 
           return (
             <div key={attribute.id} className="space-y-2">
-              <Label>{attribute.name}</Label>
+              <p className="text-sm font-semibold text-[color:var(--brand-ink)]">
+                {attribute.name}
+                {selectedValue && (
+                  <span className="ml-1.5 font-normal text-[color:var(--brand-muted)]">
+                    {selectedValue}
+                  </span>
+                )}
+              </p>
               <div className="flex flex-wrap gap-2">
                 {attribute.options.map((option) => {
                   const isAvailable = availableOptions.includes(option);
@@ -105,11 +111,11 @@ export function VariationSelector({
                       disabled={!isAvailable}
                       onClick={() => handleAttributeChange(attribute.name, option)}
                       className={cn(
-                        "px-4 py-2 text-sm border rounded-md transition-all",
+                        "rounded-full border px-4 py-2 text-sm font-medium transition-colors",
                         isSelected
-                          ? "border-primary bg-primary text-primary-foreground"
-                          : "border-input bg-background hover:bg-accent",
-                        !isAvailable && "opacity-50 cursor-not-allowed line-through"
+                          ? "border-[color:var(--brand-accent)] bg-[color:var(--brand-accent)] text-[#fffaf2]"
+                          : "border-[color:var(--brand-border)] bg-transparent text-[color:var(--brand-ink)] hover:border-[color:var(--brand-muted)]",
+                        !isAvailable && "cursor-not-allowed opacity-40 line-through"
                       )}
                     >
                       {option}

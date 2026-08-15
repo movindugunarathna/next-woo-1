@@ -6,6 +6,7 @@ export { ProductFilters } from "./product-filters";
 export { PriceDisplay } from "./price-display";
 export { StockBadge } from "./stock-badge";
 export { VariationSelector } from "./variation-selector";
+export { ProductTabs } from "./product-tabs";
 export { AddToCartButton } from "./add-to-cart-button";
 export { CartProvider, useCart } from "./cart-provider";
 export { CartDrawer } from "./cart-drawer";

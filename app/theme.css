@@ -189,6 +189,32 @@
         background: var(--brand-card);
     }
 
+    /* Buttons/chips sitting directly on a photo (full-bleed hero, promo banners) */
+    .brand-btn-invert {
+        border: 1px solid rgba(255, 255, 255, 0.75);
+        background: transparent;
+        color: #fff;
+        transition: background-color 180ms ease, color 180ms ease;
+    }
+
+    .brand-btn-invert:hover {
+        background: #fff;
+        color: var(--brand-ink);
+    }
+
+    .brand-chip-invert {
+        border: 1px solid rgba(255, 255, 255, 0.35);
+        background: rgba(255, 255, 255, 0.12);
+        color: #fff;
+        border-radius: 999px;
+        font-size: 0.72rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.12em;
+        padding: 0.55rem 0.85rem;
+        backdrop-filter: blur(6px);
+    }
+
     /* ---------- Imagery ---------- */
 
     .brand-image-frame {
@@ -208,6 +234,11 @@
 
     .brand-image-overlay {
         background: linear-gradient(to top, color-mix(in oklab, #000, transparent 8%), transparent 55%);
+    }
+
+    /* Full-bleed hero scrim — flat dark wash so white copy stays legible over any photo */
+    .brand-hero-scrim {
+        background: linear-gradient(180deg, rgba(10, 8, 5, 0.55) 0%, rgba(10, 8, 5, 0.35) 45%, rgba(10, 8, 5, 0.62) 100%);
     }
 
     /* ---------- Misc ---------- */

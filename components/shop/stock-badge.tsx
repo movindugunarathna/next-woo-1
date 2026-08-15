@@ -1,6 +1,5 @@
 import type { Product } from "@/lib/woocommerce.d";
 import { isProductInStock, getProductStockMessage } from "@/lib/woocommerce";
-import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 
 interface StockBadgeProps {
@@ -9,11 +8,7 @@ interface StockBadgeProps {
   className?: string;
 }
 
-export function StockBadge({
-  product,
-  showQuantity = false,
-  className,
-}: StockBadgeProps) {
+export function StockBadge({ product, className }: StockBadgeProps) {
   const inStock = isProductInStock(product);
   const message = getProductStockMessage(product);
 
@@ -25,34 +20,26 @@ export function StockBadge({
 
   const isBackorder = product.stock_status === "onbackorder";
 
+  const dotColor = !inStock
+    ? "bg-red-500"
+    : isBackorder
+      ? "bg-blue-500"
+      : isLowStock
+        ? "bg-amber-500"
+        : "bg-emerald-500";
+
+  const textColor = !inStock
+    ? "text-red-600 dark:text-red-400"
+    : isBackorder
+      ? "text-blue-600 dark:text-blue-400"
+      : isLowStock
+        ? "text-amber-600 dark:text-amber-400"
+        : "text-emerald-600 dark:text-emerald-400";
+
   return (
-    <div className={cn("flex items-center gap-2", className)}>
-      {inStock ? (
-        <Badge
-          variant={isLowStock ? "outline" : "secondary"}
-          className={cn(
-            isLowStock && "border-yellow-500 text-yellow-600 bg-yellow-50"
-          )}
-        >
-          <span
-            className={cn(
-              "w-2 h-2 rounded-full mr-2",
-              isLowStock ? "bg-yellow-500" : "bg-green-500"
-            )}
-          />
-          {message}
-        </Badge>
-      ) : isBackorder ? (
-        <Badge variant="outline" className="border-blue-500 text-blue-600 bg-blue-50">
-          <span className="w-2 h-2 rounded-full bg-blue-500 mr-2" />
-          {message}
-        </Badge>
-      ) : (
-        <Badge variant="destructive">
-          <span className="w-2 h-2 rounded-full bg-red-300 mr-2" />
-          {message}
-        </Badge>
-      )}
+    <div className={cn("flex items-center gap-2 text-sm font-medium", textColor, className)}>
+      <span className={cn("h-1.5 w-1.5 rounded-full", dotColor)} />
+      {message}
     </div>
   );
 }

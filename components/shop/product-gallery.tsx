@@ -16,7 +16,7 @@ export function ProductGallery({ images, productName }: ProductGalleryProps) {
 
   if (!images || images.length === 0) {
     return (
-      <div className="flex aspect-square items-center justify-center rounded-2xl border border-slate-200 bg-slate-100 text-slate-500 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300">
+      <div className="brand-image-frame flex aspect-square items-center justify-center text-sm text-[color:var(--brand-muted)]">
         No image available
       </div>
     );
@@ -25,31 +25,21 @@ export function ProductGallery({ images, productName }: ProductGalleryProps) {
   const selectedImage = images[selectedIndex];
 
   return (
-    <div className="flex flex-col gap-4">
-      {/* Main Image */}
-      <div className="relative aspect-square overflow-hidden rounded-2xl border border-slate-200 bg-white dark:border-slate-700 dark:bg-slate-900">
-        <Image
-          src={selectedImage.src}
-          alt={selectedImage.alt || productName}
-          fill
-          className="object-cover transition-transform duration-500 hover:scale-105"
-          sizes="(max-width: 768px) 100vw, 50vw"
-          priority
-        />
-      </div>
-
+    <div className="flex flex-col-reverse gap-3 sm:flex-row">
       {/* Thumbnails */}
       {images.length > 1 && (
-        <div className="flex gap-2 overflow-x-auto pb-2">
+        <div className="flex gap-2 overflow-x-auto sm:w-20 sm:flex-col sm:overflow-visible">
           {images.map((image, index) => (
             <button
               key={image.id}
+              type="button"
               onClick={() => setSelectedIndex(index)}
+              aria-label={`Show image ${index + 1}`}
               className={cn(
-                "relative h-20 w-20 flex-shrink-0 overflow-hidden rounded-xl border-2 bg-white transition-all dark:bg-slate-900",
+                "relative h-16 w-16 flex-shrink-0 overflow-hidden rounded-xl border bg-[color:var(--brand-card)] transition-colors sm:h-20 sm:w-20",
                 selectedIndex === index
-                  ? "border-slate-900 dark:border-slate-100"
-                  : "border-slate-200 hover:border-slate-400 dark:border-slate-700 dark:hover:border-slate-400"
+                  ? "border-[color:var(--brand-accent)]"
+                  : "border-[color:var(--brand-border)] hover:border-[color:var(--brand-muted)]"
               )}
             >
               <Image
@@ -63,6 +53,18 @@ export function ProductGallery({ images, productName }: ProductGalleryProps) {
           ))}
         </div>
       )}
+
+      {/* Main image */}
+      <div className="brand-image-frame relative aspect-square flex-1">
+        <Image
+          src={selectedImage.src}
+          alt={selectedImage.alt || productName}
+          fill
+          className="object-cover"
+          sizes="(max-width: 768px) 100vw, 50vw"
+          priority
+        />
+      </div>
     </div>
   );
 }

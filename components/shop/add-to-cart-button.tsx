@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { ShoppingCart, Plus, Minus, Loader2 } from "lucide-react";
+import { ShoppingBag, Plus, Minus, Loader2 } from "lucide-react";
 
 import type { Product, ProductVariation } from "@/lib/woocommerce.d";
 import { parsePriceValue } from "@/lib/woocommerce";
@@ -79,35 +79,37 @@ export function AddToCartButton({
 
   if (!inStock) {
     return (
-      <Button disabled className={cn("w-full", className)}>
+      <Button disabled size="lg" className={cn("w-full rounded-full", className)}>
         Out of Stock
       </Button>
     );
   }
 
   return (
-    <div className={cn("flex flex-col gap-3", className)}>
+    <div className={cn("flex flex-col gap-4", className)}>
       {/* Quantity Selector */}
       {showQuantity && (
-        <div className="flex items-center gap-2">
-          <span className="text-sm text-muted-foreground">Quantity:</span>
-          <div className="flex items-center border rounded-md">
+        <div className="flex items-center gap-3">
+          <span className="text-sm font-medium text-[color:var(--brand-muted)]">
+            Quantity
+          </span>
+          <div className="flex items-center rounded-full border border-[color:var(--brand-border)]">
             <Button
               type="button"
               variant="ghost"
               size="icon"
-              className="h-9 w-9"
+              className="h-9 w-9 rounded-full hover:bg-[color:var(--brand-card)]"
               onClick={decrementQuantity}
               disabled={quantity <= 1}
             >
               <Minus className="h-4 w-4" />
             </Button>
-            <span className="w-12 text-center font-medium">{quantity}</span>
+            <span className="w-10 text-center font-medium">{quantity}</span>
             <Button
               type="button"
               variant="ghost"
               size="icon"
-              className="h-9 w-9"
+              className="h-9 w-9 rounded-full hover:bg-[color:var(--brand-card)]"
               onClick={incrementQuantity}
               disabled={quantity >= maxQuantity}
             >
@@ -121,8 +123,7 @@ export function AddToCartButton({
       <Button
         onClick={handleAddToCart}
         disabled={needsVariation || isAdding}
-        className="w-full"
-        size="lg"
+        className="brand-btn-primary h-12 w-full rounded-full text-sm"
       >
         {isAdding ? (
           <>
@@ -133,7 +134,7 @@ export function AddToCartButton({
           "Select options"
         ) : (
           <>
-            <ShoppingCart className="mr-2 h-4 w-4" />
+            <ShoppingBag className="mr-2 h-4 w-4" />
             Add to Cart
           </>
         )}

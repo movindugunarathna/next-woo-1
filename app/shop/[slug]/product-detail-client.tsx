@@ -3,7 +3,7 @@
 import { useState, useCallback } from "react";
 
 import type { Product, ProductVariation } from "@/lib/woocommerce.d";
-import { VariationSelector, AddToCartButton, PriceDisplay, StockBadge } from "@/components/shop";
+import { VariationSelector, AddToCartButton, PriceDisplay } from "@/components/shop";
 
 interface ProductDetailClientProps {
   product: Product;
@@ -32,7 +32,7 @@ export function ProductDetailClient({
   const isOnSale = selectedVariation?.on_sale ?? product.on_sale;
 
   return (
-    <div className="space-y-6 rounded-2xl border border-slate-200 bg-slate-50 p-4 dark:border-slate-700 dark:bg-slate-800">
+    <div className="space-y-6">
       {/* Variation Selector */}
       <VariationSelector
         product={product}
@@ -42,15 +42,13 @@ export function ProductDetailClient({
 
       {/* Updated Price Display */}
       {selectedVariation && (
-        <div className="space-y-2 rounded-xl border border-slate-200 bg-white px-4 py-3 dark:border-slate-700 dark:bg-slate-900">
-          <PriceDisplay
-            price={displayPrice}
-            regularPrice={displayRegularPrice}
-            salePrice={displaySalePrice}
-            onSale={isOnSale}
-            size="md"
-          />
-        </div>
+        <PriceDisplay
+          price={displayPrice}
+          regularPrice={displayRegularPrice}
+          salePrice={displaySalePrice}
+          onSale={isOnSale}
+          size="md"
+        />
       )}
 
       {/* Add to Cart */}

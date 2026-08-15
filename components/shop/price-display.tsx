@@ -1,5 +1,4 @@
 import { formatPrice, calculateDiscountPercentage } from "@/lib/woocommerce";
-import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 
 interface PriceDisplayProps {
@@ -47,12 +46,12 @@ export function PriceDisplay({
   }
 
   return (
-    <div className="flex items-center gap-3 flex-wrap">
+    <div className="flex flex-wrap items-center gap-3">
       {onSale ? (
         <>
           <span
             className={cn(
-              "font-bold text-destructive",
+              "brand-display font-semibold text-[color:var(--brand-ink)]",
               sizeClasses[size].price
             )}
           >
@@ -60,18 +59,25 @@ export function PriceDisplay({
           </span>
           <span
             className={cn(
-              "text-muted-foreground line-through",
+              "text-[color:var(--brand-muted)] line-through",
               sizeClasses[size].original
             )}
           >
             {formatPrice(regularPrice)}
           </span>
           {showBadge && discountPercentage > 0 && (
-            <Badge variant="destructive">Save {discountPercentage}%</Badge>
+            <span className="brand-badge-sale">
+              Save {discountPercentage}%
+            </span>
           )}
         </>
       ) : (
-        <span className={cn("font-bold", sizeClasses[size].price)}>
+        <span
+          className={cn(
+            "brand-display font-semibold text-[color:var(--brand-ink)]",
+            sizeClasses[size].price
+          )}
+        >
           {formatPrice(price || regularPrice)}
         </span>
       )}
