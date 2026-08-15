@@ -1,0 +1,229 @@
+/**
+ * Calviz brand theme — single source of design tokens.
+ *
+ * This file is the one place brand colors, type rhythm, and shared
+ * "brand-*" utility classes are defined. Every page in the project should
+ * reach for these tokens/utilities (or the shadcn tokens in globals.css,
+ * which are bridged to the same palette) instead of hardcoding one-off
+ * colors, so the storefront reads as one consistent design across
+ * home, shop, cart, checkout, and account.
+ *
+ * Palette: warm Ceylon-ivory surfaces, near-black ink, clay/terracotta
+ * as the signature accent, and a muted olive as the secondary accent for
+ * "new" tags — inspired by the sun-warmed neutrals and confident
+ * black/white typography common across local fashion storefronts.
+ */
+
+@layer base {
+    :root {
+        /* Surfaces */
+        --brand-bg: #f7f2ea;
+        --brand-bg-alt: #efe4d3;
+        --brand-surface: #fffdf9;
+        --brand-card: #fffaf2;
+
+        /* Text */
+        --brand-ink: #17140f;
+        --brand-muted: #6b6154;
+
+        /* Structure */
+        --brand-border: #e1d3bf;
+
+        /* Signature accent — terracotta clay */
+        --brand-accent: #b5602e;
+        --brand-accent-strong: #8a431c;
+        --brand-accent-soft: #f1ded0;
+
+        /* Secondary accent — muted olive, used sparingly for "new" tags */
+        --brand-secondary: #46503c;
+        --brand-secondary-soft: #e3e8da;
+
+        /* Sale / discount */
+        --brand-sale: #8a2f2a;
+    }
+
+    .dark {
+        --brand-bg: #121009;
+        --brand-bg-alt: #1a1610;
+        --brand-surface: #1c1712;
+        --brand-card: #241d16;
+
+        --brand-ink: #f8f2e9;
+        --brand-muted: #c7b9a4;
+
+        --brand-border: #3a2f22;
+
+        --brand-accent: #e2a274;
+        --brand-accent-strong: #f0bb90;
+        --brand-accent-soft: #3a2a1e;
+
+        --brand-secondary: #9db588;
+        --brand-secondary-soft: #2c3324;
+
+        --brand-sale: #d97a72;
+    }
+}
+
+@layer utilities {
+    /* ---------- Surfaces ---------- */
+
+    .brand-page {
+        background:
+            radial-gradient(1200px 420px at 15% -20%, color-mix(in oklab, var(--brand-bg-alt), transparent 35%), transparent 70%),
+            radial-gradient(900px 320px at 95% 0%, color-mix(in oklab, var(--brand-bg-alt), transparent 50%), transparent 75%),
+            var(--brand-bg);
+        color: var(--brand-ink);
+    }
+
+    .brand-shell {
+        border: 1px solid var(--brand-border);
+        background: var(--brand-surface);
+        border-radius: 1.75rem;
+        box-shadow: 0 35px 80px -65px color-mix(in oklab, #000, transparent 50%);
+    }
+
+    .brand-card {
+        border: 1px solid var(--brand-border);
+        background: var(--brand-card);
+        border-radius: 1.25rem;
+    }
+
+    /* Subtle woven-texture backdrop for hero/promo bands — pure CSS, no imagery */
+    .brand-weave {
+        background-image:
+            repeating-linear-gradient(135deg, color-mix(in oklab, var(--brand-ink), transparent 96%) 0px, color-mix(in oklab, var(--brand-ink), transparent 96%) 1px, transparent 1px, transparent 14px);
+    }
+
+    /* ---------- Typography ---------- */
+
+    .brand-kicker {
+        font-size: 0.72rem;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+        font-weight: 700;
+        color: var(--brand-muted);
+    }
+
+    .brand-display {
+        font-family: var(--font-display);
+        letter-spacing: -0.02em;
+        line-height: 1.04;
+    }
+
+    .brand-copy {
+        color: var(--brand-muted);
+        line-height: 1.7;
+    }
+
+    .brand-link {
+        color: var(--brand-accent-strong);
+        text-underline-offset: 0.3rem;
+        transition: color 180ms ease;
+    }
+
+    .brand-link:hover {
+        color: var(--brand-accent);
+        text-decoration: underline;
+    }
+
+    /* ---------- Chips / badges ---------- */
+
+    .brand-chip {
+        border: 1px solid var(--brand-border);
+        background: color-mix(in oklab, var(--brand-card), transparent 8%);
+        color: var(--brand-ink);
+        border-radius: 999px;
+        font-size: 0.72rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.12em;
+        padding: 0.55rem 0.85rem;
+    }
+
+    .brand-badge-new {
+        display: inline-flex;
+        align-items: center;
+        border-radius: 999px;
+        background: var(--brand-secondary-soft);
+        color: var(--brand-secondary);
+        font-size: 0.65rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        padding: 0.3rem 0.6rem;
+    }
+
+    .brand-badge-sale {
+        display: inline-flex;
+        align-items: center;
+        border-radius: 999px;
+        background: color-mix(in oklab, var(--brand-sale), transparent 88%);
+        color: var(--brand-sale);
+        font-size: 0.65rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        padding: 0.3rem 0.6rem;
+    }
+
+    /* ---------- Buttons ---------- */
+
+    .brand-btn-primary {
+        background: var(--brand-accent);
+        color: #fffaf2;
+        transition: background-color 180ms ease;
+    }
+
+    .brand-btn-primary:hover {
+        background: var(--brand-accent-strong);
+    }
+
+    .brand-btn-outline {
+        border: 1px solid var(--brand-border);
+        background: transparent;
+        color: var(--brand-ink);
+        transition: background-color 180ms ease;
+    }
+
+    .brand-btn-outline:hover {
+        background: var(--brand-card);
+    }
+
+    /* ---------- Imagery ---------- */
+
+    .brand-image-frame {
+        position: relative;
+        overflow: hidden;
+        border-radius: 1.25rem;
+        background: var(--brand-card);
+    }
+
+    .brand-image-frame img {
+        transition: transform 500ms cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .brand-image-frame:hover img {
+        transform: scale(1.06);
+    }
+
+    .brand-image-overlay {
+        background: linear-gradient(to top, color-mix(in oklab, #000, transparent 8%), transparent 55%);
+    }
+
+    /* ---------- Misc ---------- */
+
+    .brand-divider {
+        height: 1px;
+        background: var(--brand-border);
+    }
+
+    .brand-blur-nav {
+        backdrop-filter: blur(14px);
+        background: color-mix(in oklab, var(--brand-surface), transparent 12%);
+    }
+
+    .brand-promo-bar {
+        background: var(--brand-ink);
+        color: var(--brand-bg);
+    }
+}

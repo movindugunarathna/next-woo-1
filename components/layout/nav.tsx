@@ -3,10 +3,10 @@ import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { MobileNav } from "@/components/nav/mobile-nav";
 import { CartDrawer } from "@/components/shop";
+import { ThemeToggle } from "@/components/theme/theme-toggle";
 import { mainMenu } from "@/menu.config";
 import { siteConfig } from "@/site.config";
 import { cn } from "@/lib/utils";
-import Logo from "@/public/logo.svg";
 
 interface NavProps {
   className?: string;
@@ -17,26 +17,39 @@ interface NavProps {
 export function Nav({ className, children, id }: NavProps) {
   return (
     <nav
-      className={cn("sticky z-50 top-0 bg-background", "border-b", className)}
+      className={cn(
+        "brand-blur-nav sticky top-0 z-50 border-b border-[color:var(--brand-border)]",
+        className
+      )}
       id={id}
     >
       <div
         id="nav-container"
-        className="max-w-5xl mx-auto py-4 px-6 sm:px-8 flex justify-between items-center"
+        className="mx-auto flex max-w-6xl items-center justify-between px-4 py-4 sm:px-6 lg:px-10"
       >
         <Link
           className="hover:opacity-75 transition-all flex gap-4 items-center"
           href="/"
         >
+          <h2 className="sr-only">{siteConfig.site_name}</h2>
           <Image
-            src={Logo}
-            alt="Logo"
+            src="/calviz-logo-light.svg"
+            alt="Calviz"
             loading="eager"
-            className="dark:invert"
-            width={42}
-            height={26.44}
+            className="h-7 w-auto dark:hidden"
+            width={210}
+            height={56}
+            priority
           />
-          <h2 className="text-sm">{siteConfig.site_name}</h2>
+          <Image
+            src="/calviz-logo-dark.svg"
+            alt="Calviz"
+            loading="eager"
+            className="hidden h-7 w-auto dark:block"
+            width={210}
+            height={56}
+            priority
+          />
         </Link>
         {children}
         <div className="flex items-center gap-2">
@@ -49,6 +62,7 @@ export function Nav({ className, children, id }: NavProps) {
               </Button>
             ))}
           </div>
+          <ThemeToggle />
           <CartDrawer />
           <MobileNav />
         </div>

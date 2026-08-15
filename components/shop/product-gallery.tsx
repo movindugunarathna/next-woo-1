@@ -16,7 +16,7 @@ export function ProductGallery({ images, productName }: ProductGalleryProps) {
 
   if (!images || images.length === 0) {
     return (
-      <div className="flex aspect-square items-center justify-center rounded-2xl border border-slate-200 bg-slate-100 text-slate-500">
+      <div className="flex aspect-square items-center justify-center rounded-2xl border border-slate-200 bg-slate-100 text-slate-500 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300">
         No image available
       </div>
     );
@@ -27,7 +27,7 @@ export function ProductGallery({ images, productName }: ProductGalleryProps) {
   return (
     <div className="flex flex-col gap-4">
       {/* Main Image */}
-      <div className="relative aspect-square overflow-hidden rounded-2xl border border-slate-200 bg-white">
+      <div className="relative aspect-square overflow-hidden rounded-2xl border border-slate-200 bg-white dark:border-slate-700 dark:bg-slate-900">
         <Image
           src={selectedImage.src}
           alt={selectedImage.alt || productName}
@@ -46,10 +46,10 @@ export function ProductGallery({ images, productName }: ProductGalleryProps) {
               key={image.id}
               onClick={() => setSelectedIndex(index)}
               className={cn(
-                "relative h-20 w-20 flex-shrink-0 overflow-hidden rounded-xl border-2 bg-white transition-all",
+                "relative h-20 w-20 flex-shrink-0 overflow-hidden rounded-xl border-2 bg-white transition-all dark:bg-slate-900",
                 selectedIndex === index
-                  ? "border-slate-900"
-                  : "border-slate-200 hover:border-slate-400"
+                  ? "border-slate-900 dark:border-slate-100"
+                  : "border-slate-200 hover:border-slate-400 dark:border-slate-700 dark:hover:border-slate-400"
               )}
             >
               <Image

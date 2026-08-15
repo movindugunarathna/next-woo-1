@@ -38,7 +38,7 @@ export function MobileNav() {
           <span className="sr-only">Toggle Menu</span>
         </Button>
       </SheetTrigger>
-      <SheetContent side="left" className="pr-0">
+      <SheetContent side="right" className="pl-0">
         <SheetHeader>
           <SheetTitle className="text-left">
             <MobileLink
@@ -51,7 +51,7 @@ export function MobileNav() {
             </MobileLink>
           </SheetTitle>
         </SheetHeader>
-        <ScrollArea className="my-4 h-[calc(100vh-8rem)] pb-10 pl-6">
+        <ScrollArea className="my-4 h-[calc(100vh-8rem)] pb-10 pl-6 pr-6">
           <div className="flex flex-col space-y-3">
             <h3 className="text-small mt-6">Menu</h3>
             <Separator />

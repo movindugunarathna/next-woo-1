@@ -76,13 +76,13 @@ export default async function ProductPage({ params }: ProductPageProps) {
   ]);
 
   return (
-    <div className={`${displayFont.variable} bg-[#f4f7fb] text-slate-900`}>
+    <div className={`${displayFont.variable} bg-[#f4f7fb] text-slate-900 dark:bg-slate-950 dark:text-slate-100`}>
       <Section className="py-0">
         <Container className="max-w-6xl px-4 sm:px-6 lg:px-10">
           <div className="space-y-10 py-8 md:space-y-14 md:py-12">
           {/* Breadcrumb */}
-          <nav className="home-reveal flex flex-wrap items-center gap-2 rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-600 shadow-sm">
-            <Link href="/shop" className="hover:text-slate-900">
+          <nav className="home-reveal flex flex-wrap items-center gap-2 rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-600 shadow-sm dark:border-slate-800 dark:bg-slate-900 dark:text-slate-300">
+            <Link href="/shop" className="hover:text-slate-900 dark:hover:text-slate-100">
               Shop
             </Link>
             <span>/</span>
@@ -90,20 +90,20 @@ export default async function ProductPage({ params }: ProductPageProps) {
               <>
                 <Link
                   href={`/shop?category=${product.categories[0].slug}`}
-                  className="hover:text-slate-900"
+                  className="hover:text-slate-900 dark:hover:text-slate-100"
                 >
                   {product.categories[0].name}
                 </Link>
                 <span>/</span>
               </>
             )}
-            <span className="text-slate-900">{product.name}</span>
+            <span className="text-slate-900 dark:text-slate-100">{product.name}</span>
           </nav>
 
           {/* Product Details */}
-          <div className="home-reveal grid gap-8 rounded-3xl border border-slate-200 bg-white p-5 shadow-[0_20px_70px_-55px_rgba(15,23,42,0.5)] md:p-8 lg:grid-cols-2 lg:gap-12" style={{ animationDelay: "120ms" }}>
+          <div className="home-reveal grid gap-8 rounded-3xl border border-slate-200 bg-white p-5 shadow-[0_20px_70px_-55px_rgba(15,23,42,0.5)] dark:border-slate-800 dark:bg-slate-900 dark:shadow-[0_20px_70px_-55px_rgba(2,6,23,0.95)] md:p-8 lg:grid-cols-2 lg:gap-12" style={{ animationDelay: "120ms" }}>
             {/* Gallery */}
-            <div className="rounded-2xl border border-slate-200 bg-slate-50/50 p-3 sm:p-4">
+            <div className="rounded-2xl border border-slate-200 bg-slate-50/50 p-3 dark:border-slate-800 dark:bg-slate-800/50 sm:p-4">
               <ProductGallery images={product.images} productName={product.name} />
             </div>
 
@@ -117,7 +117,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
                       key={cat.id}
                       href={`/shop?category=${cat.slug}`}
                     >
-                      <Badge className="rounded-full border border-slate-300 bg-slate-100 px-3 py-1 text-slate-700 hover:bg-slate-200" variant="outline">
+                      <Badge className="rounded-full border border-slate-300 bg-slate-100 px-3 py-1 text-slate-700 hover:bg-slate-200 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200 dark:hover:bg-slate-700" variant="outline">
                         {cat.name}
                       </Badge>
                     </Link>
@@ -126,7 +126,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
               )}
 
               {/* Title */}
-              <h1 className="font-[family-name:var(--font-display)] text-3xl font-semibold tracking-tight text-slate-900 md:text-4xl">
+              <h1 className="font-[family-name:var(--font-display)] text-3xl font-semibold tracking-tight text-slate-900 dark:text-slate-100 md:text-4xl">
                 {product.name}
               </h1>
 
@@ -140,21 +140,21 @@ export default async function ProductPage({ params }: ProductPageProps) {
                         className={
                           i < Math.round(parseFloat(product.average_rating))
                             ? "text-amber-500"
-                            : "text-slate-300"
+                            : "text-slate-300 dark:text-slate-600"
                         }
                       >
                         ★
                       </span>
                     ))}
                   </div>
-                  <span className="text-sm text-slate-600">
+                  <span className="text-sm text-slate-600 dark:text-slate-300">
                     ({product.rating_count} reviews)
                   </span>
                 </div>
               )}
 
               {/* Price */}
-              <div className="rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3">
+              <div className="rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 dark:border-slate-700 dark:bg-slate-800">
                 <PriceDisplay
                   price={product.price}
                   regularPrice={product.regular_price}
@@ -170,13 +170,13 @@ export default async function ProductPage({ params }: ProductPageProps) {
               {/* Short Description */}
               {product.short_description && (
                 <Prose>
-                  <div className="text-slate-600">
+                  <div className="text-slate-600 dark:text-slate-300">
                     {product.short_description.replace(/<[^>]*>/g, "")}
                   </div>
                 </Prose>
               )}
 
-              <Separator className="bg-slate-200" />
+              <Separator className="bg-slate-200 dark:bg-slate-700" />
 
               {/* Variable Product Handler (Client Component) */}
               {product.type === "variable" && variations.length > 0 ? (
@@ -184,23 +184,23 @@ export default async function ProductPage({ params }: ProductPageProps) {
               ) : (
                 <AddToCartButton
                   product={product}
-                  className="rounded-2xl border border-slate-200 bg-slate-50 p-4"
+                    className="rounded-2xl border border-slate-200 bg-slate-50 p-4 dark:border-slate-700 dark:bg-slate-800"
                 />
               )}
 
-              <Separator className="bg-slate-200" />
+              <Separator className="bg-slate-200 dark:bg-slate-700" />
 
               {/* Product Meta */}
-              <div className="space-y-2 rounded-2xl border border-slate-200 bg-slate-50 p-4 text-sm text-slate-700">
+              <div className="space-y-2 rounded-2xl border border-slate-200 bg-slate-50 p-4 text-sm text-slate-700 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200">
                 {product.sku && (
                   <p>
-                    <span className="text-slate-500">SKU:</span>{" "}
+                    <span className="text-slate-500 dark:text-slate-400">SKU:</span>{" "}
                     {product.sku}
                   </p>
                 )}
                 {product.tags.length > 0 && (
                   <p>
-                    <span className="text-slate-500">Tags:</span>{" "}
+                    <span className="text-slate-500 dark:text-slate-400">Tags:</span>{" "}
                     {product.tags.map((tag, i) => (
                       <span key={tag.id}>
                         <Link
@@ -220,12 +220,12 @@ export default async function ProductPage({ params }: ProductPageProps) {
 
           {/* Full Description */}
           {product.description && (
-            <div className="home-reveal space-y-4 rounded-3xl border border-slate-200 bg-white p-6 shadow-sm" style={{ animationDelay: "170ms" }}>
-              <h2 className="font-[family-name:var(--font-display)] text-2xl font-semibold tracking-tight text-slate-900">
+            <div className="home-reveal space-y-4 rounded-3xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900" style={{ animationDelay: "170ms" }}>
+              <h2 className="font-[family-name:var(--font-display)] text-2xl font-semibold tracking-tight text-slate-900 dark:text-slate-100">
                 Description
               </h2>
               <Prose>
-                <div className="text-slate-600">
+                <div className="text-slate-600 dark:text-slate-300">
                   {product.description.replace(/<[^>]*>/g, "")}
                 </div>
               </Prose>
@@ -234,18 +234,18 @@ export default async function ProductPage({ params }: ProductPageProps) {
 
           {/* Reviews */}
           {reviews.length > 0 && (
-            <div className="home-reveal space-y-6 rounded-3xl border border-slate-200 bg-white p-6 shadow-sm" style={{ animationDelay: "220ms" }}>
-              <h2 className="font-[family-name:var(--font-display)] text-2xl font-semibold tracking-tight text-slate-900">
+            <div className="home-reveal space-y-6 rounded-3xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900" style={{ animationDelay: "220ms" }}>
+              <h2 className="font-[family-name:var(--font-display)] text-2xl font-semibold tracking-tight text-slate-900 dark:text-slate-100">
                 Reviews ({reviews.length})
               </h2>
               <div className="space-y-4">
                 {reviews.map((review) => (
-                  <div key={review.id} className="space-y-2 rounded-2xl border border-slate-200 bg-slate-50 p-4">
+                  <div key={review.id} className="space-y-2 rounded-2xl border border-slate-200 bg-slate-50 p-4 dark:border-slate-700 dark:bg-slate-800">
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-2">
-                        <span className="font-medium text-slate-900">{review.reviewer}</span>
+                        <span className="font-medium text-slate-900 dark:text-slate-100">{review.reviewer}</span>
                         {review.verified && (
-                          <Badge className="rounded-full border border-emerald-300 bg-emerald-50 text-emerald-700" variant="outline">
+                          <Badge className="rounded-full border border-emerald-300 bg-emerald-50 text-emerald-700 dark:border-emerald-900/60 dark:bg-emerald-950/40 dark:text-emerald-300" variant="outline">
                             Verified
                           </Badge>
                         )}
@@ -257,7 +257,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
                             className={
                               i < review.rating
                                 ? "text-amber-500"
-                                : "text-slate-300"
+                                : "text-slate-300 dark:text-slate-600"
                             }
                           >
                             ★
@@ -265,10 +265,10 @@ export default async function ProductPage({ params }: ProductPageProps) {
                         ))}
                       </div>
                     </div>
-                    <p className="text-slate-600">
+                    <p className="text-slate-600 dark:text-slate-300">
                       {review.review.replace(/<[^>]*>/g, "")}
                     </p>
-                    <p className="text-xs text-slate-500">
+                    <p className="text-xs text-slate-500 dark:text-slate-400">
                       {new Date(review.date_created).toLocaleDateString()}
                     </p>
                   </div>
@@ -280,7 +280,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
           {/* Related Products */}
           {relatedProducts.length > 0 && (
             <div className="home-reveal space-y-6" style={{ animationDelay: "270ms" }}>
-              <h2 className="font-[family-name:var(--font-display)] text-2xl font-semibold tracking-tight text-slate-900">
+              <h2 className="font-[family-name:var(--font-display)] text-2xl font-semibold tracking-tight text-slate-900 dark:text-slate-100">
                 Related Products
               </h2>
               <ProductGrid products={relatedProducts} columns={4} />

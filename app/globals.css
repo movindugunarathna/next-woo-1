@@ -134,67 +134,73 @@
     }
 }
 
+/*
+  Bridged to the Calviz brand palette defined in theme.css so that every
+  component built on shadcn's semantic classes (bg-background, bg-primary,
+  text-muted-foreground, etc.) automatically matches the brand-* utilities
+  used on the home page — one palette, applied sitewide.
+*/
 @layer base {
     :root {
-        --background: 0 0% 100%;
-        --foreground: 0 0% 3.9%;
+        --background: 36 42% 94%;
+        --foreground: 25 20% 8%;
 
-        --card: 0 0% 100%;
-        --card-foreground: 0 0% 3.9%;
+        --card: 35 45% 98%;
+        --card-foreground: 25 20% 8%;
 
-        --popover: 0 0% 100%;
-        --popover-foreground: 0 0% 3.9%;
+        --popover: 35 45% 98%;
+        --popover-foreground: 25 20% 8%;
 
-        --primary: 0 0% 9%;
-        --primary-foreground: 0 0% 98%;
+        --primary: 21 55% 40%;
+        --primary-foreground: 36 45% 97%;
 
-        --secondary: 0 0% 96.1%;
-        --secondary-foreground: 0 0% 9%;
+        --secondary: 33 30% 90%;
+        --secondary-foreground: 25 15% 12%;
 
-        --muted: 0 0% 96.1%;
-        --muted-foreground: 0 0% 45.1%;
+        --muted: 33 25% 91%;
+        --muted-foreground: 27 12% 40%;
 
-        --accent: 0 0% 96.1%;
-        --accent-foreground: 0 0% 9%;
+        --accent: 33 30% 90%;
+        --accent-foreground: 25 15% 12%;
 
-        --destructive: 0 84.2% 60.2%;
-        --destructive-foreground: 0 0% 98%;
+        --destructive: 6 55% 35%;
+        --destructive-foreground: 36 45% 97%;
 
-        --border: 0 0% 89.8%;
-        --input: 0 0% 89.8%;
-        --ring: 0 0% 3.9%;
+        --border: 32 30% 84%;
+        --input: 32 30% 84%;
+        --ring: 21 55% 40%;
 
-        --radius: 0.5rem;
+        --radius: 0.75rem;
     }
 
     .dark {
-        --background: 0 0% 3.9%;
-        --foreground: 0 0% 98%;
+        --background: 30 22% 7%;
+        --foreground: 36 35% 95%;
 
-        --card: 0 0% 3.9%;
-        --card-foreground: 0 0% 98%;
+        --card: 28 18% 10%;
+        --card-foreground: 36 35% 95%;
 
-        --popover: 0 0% 3.9%;
-        --popover-foreground: 0 0% 98%;
+        --popover: 28 18% 10%;
+        --popover-foreground: 36 35% 95%;
 
-        --primary: 0 0% 98%;
-        --primary-foreground: 0 0% 9%;
+        --primary: 24 65% 68%;
+        --primary-foreground: 20 30% 12%;
 
-        --secondary: 0 0% 14.9%;
-        --secondary-foreground: 0 0% 98%;
+        --secondary: 28 14% 16%;
+        --secondary-foreground: 36 35% 95%;
 
-        --muted: 0 0% 14.9%;
-        --muted-foreground: 0 0% 63.9%;
+        --muted: 28 14% 16%;
+        --muted-foreground: 33 20% 68%;
 
-        --accent: 0 0% 14.9%;
-        --accent-foreground: 0 0% 98%;
+        --accent: 28 14% 16%;
+        --accent-foreground: 36 35% 95%;
 
-        --destructive: 0 62.8% 30.6%;
-        --destructive-foreground: 0 0% 98%;
+        --destructive: 6 55% 55%;
+        --destructive-foreground: 20 20% 10%;
 
-        --border: 0 0% 14.9%;
-        --input: 0 0% 14.9%;
-        --ring: 0 0% 83.1%;
+        --border: 28 18% 20%;
+        --input: 28 18% 20%;
+        --ring: 24 65% 68%;
     }
 }
 

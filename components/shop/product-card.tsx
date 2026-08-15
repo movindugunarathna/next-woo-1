@@ -23,11 +23,11 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
     <Link
       href={`/shop/${product.slug}`}
       className={cn(
-        "group flex flex-col border rounded-lg overflow-hidden bg-accent/30",
-        "hover:bg-accent/75 transition-all"
+        "group flex flex-col overflow-hidden rounded-2xl border border-[color:var(--brand-border)] bg-[color:var(--brand-surface)]",
+        "transition-all duration-300 hover:-translate-y-0.5"
       )}
     >
-      <div className="relative aspect-square overflow-hidden bg-muted">
+      <div className="relative aspect-square overflow-hidden bg-[color:var(--brand-card)]">
         {primaryImage?.src ? (
           <Image
             src={primaryImage.src}
@@ -56,13 +56,13 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
       <div className="flex flex-col gap-2 p-4">
         {/* Category */}
         {product.categories[0] && (
-          <span className="text-xs text-muted-foreground">
+          <span className="brand-kicker text-[0.65rem]">
             {product.categories[0].name}
           </span>
         )}
 
         {/* Name */}
-        <h3 className="font-medium line-clamp-2 group-hover:underline decoration-muted-foreground underline-offset-4 decoration-dotted">
+        <h3 className="line-clamp-2 text-[0.98rem] font-semibold">
           {product.name}
         </h3>
 
@@ -78,7 +78,7 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
               </span>
             </>
           ) : (
-            <span className="font-semibold">
+            <span className="font-semibold text-[color:var(--brand-ink)]">
               {product.price ? formatPrice(product.price) : "Price on request"}
             </span>
           )}

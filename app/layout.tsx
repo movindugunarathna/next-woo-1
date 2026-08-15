@@ -1,4 +1,5 @@
 import "./globals.css";
+import "./theme.css";
 
 import { Inter as FontSans } from "next/font/google";
 import { ThemeProvider } from "@/components/theme/theme-provider";
