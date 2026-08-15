@@ -28,6 +28,15 @@ const displayFont = Bodoni_Moda({
 
 export const revalidate = 600;
 
+// Editorial fallback shown until a real featured product exists in WooCommerce.
+// Drop the artwork at public/spotlight-the-gorgons.jpg and it renders here automatically.
+const curatedSpotlight = {
+  image: "/spotlight-the-gorgons.jpg",
+  imageAlt: "Calviz \"The Gorgons\" Medusa graphic oversized tee, back view",
+  title: "The Gorgons — Medusa Tee",
+  tagline: "Oversized cut, hand-inked gorgon graphic across the back.",
+};
+
 const trustStrip = [
   {
     icon: Truck,
@@ -157,16 +166,32 @@ export default async function Home() {
                     </div>
                   </Link>
                 ) : (
-                  <div className="brand-shell brand-weave flex h-full min-h-[22rem] flex-col justify-end p-6">
-                    <p className="brand-kicker mb-2">This week spotlight</p>
-                    <p className="brand-display text-3xl font-semibold">
-                      Island-to-city essentials
-                    </p>
-                    <p className="brand-copy mt-3 text-sm">
-                      Soft palettes, structure, and daily wear that transitions
-                      from daylight errands to evening plans.
-                    </p>
-                  </div>
+                  <Link
+                    href="/shop"
+                    className="brand-image-frame group relative block h-full min-h-[22rem] w-full"
+                  >
+                    <Image
+                      src={curatedSpotlight.image}
+                      alt={curatedSpotlight.imageAlt}
+                      fill
+                      className="object-cover"
+                      sizes="(max-width: 1024px) 100vw, 40vw"
+                      priority
+                    />
+                    <div className="brand-image-overlay absolute inset-0" />
+                    <div className="absolute inset-x-0 bottom-0 space-y-1 p-5 text-white">
+                      <p className="text-[0.7rem] font-semibold uppercase tracking-[0.18em] text-white/80">
+                        This week&apos;s spotlight
+                      </p>
+                      <p className="brand-display text-2xl font-semibold">
+                        {curatedSpotlight.title}
+                      </p>
+                      <div className="flex items-center gap-2 text-sm font-semibold">
+                        {curatedSpotlight.tagline}
+                        <ArrowRight className="h-4 w-4 shrink-0 transition-transform group-hover:translate-x-1" />
+                      </div>
+                    </div>
+                  </Link>
                 )}
               </div>
             </section>
