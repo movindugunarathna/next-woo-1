@@ -173,26 +173,29 @@ export default async function Home() {
             {/* Category showcase */}
             <section className="space-y-5">
               <div
-                className="home-reveal flex items-end justify-between gap-4"
+                className="home-reveal flex flex-col items-start gap-2 sm:flex-row sm:items-end sm:justify-between sm:gap-4"
                 style={{ animationDelay: "80ms" }}
               >
                 <div>
                   <p className="brand-kicker">Collections</p>
-                  <h2 className="brand-display text-4xl font-semibold">
+                  <h2 className="brand-display text-3xl font-semibold sm:text-4xl">
                     Shop by mood
                   </h2>
                 </div>
-                <Link href="/shop" className="brand-link text-sm font-semibold">
+                <Link
+                  href="/shop"
+                  className="brand-link whitespace-nowrap text-sm font-semibold"
+                >
                   See all categories
                 </Link>
               </div>
-              <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+              <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-3">
                 {featuredCategories.length > 0 ? (
                   featuredCategories.map((category, index) => (
                     <Link
                       key={category.id}
                       href={`/shop/category/${category.slug}`}
-                      className="home-reveal brand-image-frame group relative block aspect-[4/3]"
+                      className="home-reveal brand-image-frame group relative block aspect-square sm:aspect-[4/3]"
                       style={{ animationDelay: `${index * 80 + 120}ms` }}
                     >
                       {category.image?.src ? (
@@ -202,23 +205,25 @@ export default async function Home() {
                             alt={category.image.alt || category.name}
                             fill
                             className="object-cover"
-                            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                            sizes="(max-width: 640px) 50vw, (max-width: 1024px) 50vw, 33vw"
                           />
                           <div className="brand-image-overlay absolute inset-0" />
-                          <div className="absolute inset-x-0 bottom-0 p-4 text-white">
-                            <p className="text-lg font-semibold">
+                          <div className="absolute inset-x-0 bottom-0 p-3 text-white sm:p-4">
+                            <p className="text-sm font-semibold sm:text-lg">
                               {category.name}
                             </p>
-                            <p className="text-sm text-white/80">
+                            <p className="text-xs text-white/80 sm:text-sm">
                               {category.count} curated pieces
                             </p>
                           </div>
                         </>
                       ) : (
-                        <div className="flex h-full w-full flex-col items-center justify-center gap-2 bg-[color:var(--brand-card)]">
-                          <Shirt className="h-6 w-6 text-[var(--brand-accent)]" />
-                          <p className="font-semibold">{category.name}</p>
-                          <p className="brand-copy text-sm">
+                        <div className="flex h-full w-full flex-col items-center justify-center gap-1.5 bg-[color:var(--brand-card)] p-3 text-center sm:gap-2">
+                          <Shirt className="h-5 w-5 text-[var(--brand-accent)] sm:h-6 sm:w-6" />
+                          <p className="text-sm font-semibold sm:text-base">
+                            {category.name}
+                          </p>
+                          <p className="brand-copy text-xs sm:text-sm">
                             {category.count} curated pieces
                           </p>
                         </div>
@@ -226,7 +231,7 @@ export default async function Home() {
                     </Link>
                   ))
                 ) : (
-                  <p className="brand-card p-5 text-sm brand-copy sm:col-span-2 lg:col-span-3">
+                  <p className="brand-card col-span-2 p-5 text-sm brand-copy lg:col-span-3">
                     Categories will appear here once WooCommerce category data
                     is available.
                   </p>
