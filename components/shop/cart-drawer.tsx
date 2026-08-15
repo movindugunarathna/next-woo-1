@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { ShoppingCart, X, Plus, Minus, Trash2 } from "lucide-react";
+import { ShoppingBag, X, Plus, Minus, Trash2 } from "lucide-react";
 
 import { useCart } from "./cart-provider";
 import { formatPrice, parsePriceValue } from "@/lib/woocommerce";
@@ -36,7 +36,7 @@ export function CartDrawer() {
     <Sheet open={isOpen} onOpenChange={(open) => (open ? openCart() : closeCart())}>
       <SheetTrigger asChild>
         <Button variant="ghost" size="icon" className="relative">
-          <ShoppingCart className="h-5 w-5" />
+          <ShoppingBag className="h-5 w-5" />
           {itemCount > 0 && (
             <span className="absolute -top-1 -right-1 h-5 w-5 rounded-full bg-primary text-primary-foreground text-xs flex items-center justify-center">
               {itemCount > 99 ? "99+" : itemCount}
@@ -49,7 +49,7 @@ export function CartDrawer() {
       <SheetContent className="flex flex-col w-full sm:max-w-lg">
         <SheetHeader>
           <SheetTitle className="flex items-center gap-2">
-            <ShoppingCart className="h-5 w-5" />
+            <ShoppingBag className="h-5 w-5" />
             Your Cart ({itemCount})
           </SheetTitle>
         </SheetHeader>
@@ -60,7 +60,7 @@ export function CartDrawer() {
           </div>
         ) : cart.items.length === 0 ? (
           <div className="flex-1 flex flex-col items-center justify-center gap-4">
-            <ShoppingCart className="h-16 w-16 text-muted-foreground/50" />
+            <ShoppingBag className="h-16 w-16 text-muted-foreground/50" />
             <p className="text-muted-foreground">Your cart is empty</p>
             <SheetClose asChild>
               <Button asChild>
