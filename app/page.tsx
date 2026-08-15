@@ -126,9 +126,9 @@ export default async function Home() {
             sizes="100vw"
           />
           <div className="brand-hero-scrim absolute inset-0" />
-          <Container className="relative z-10 w-full max-w-none px-4 sm:px-8 lg:px-12 xl:px-16">
+          <Container className="relative z-10 w-full max-w-none px-3 sm:px-8 lg:px-12 xl:px-16">
             <div className="space-y-3 text-white">
-              <h1 className="text-3xl font-black italic uppercase leading-[0.9] tracking-tight text-white sm:text-5xl md:text-6xl lg:whitespace-nowrap lg:text-7xl xl:text-8xl">
+              <h1 className="whitespace-nowrap text-[clamp(1.05rem,5.6vw,6rem)] font-black italic uppercase leading-none tracking-tighter text-white sm:tracking-tight">
                 Try it, wear it, love it.
               </h1>
               <p className="text-sm text-white/85 sm:text-base">
