@@ -7,6 +7,7 @@ import { Analytics } from "@vercel/analytics/react";
 import { CartProvider } from "@/components/shop";
 import { Nav } from "@/components/layout/nav";
 import { Footer } from "@/components/layout/footer";
+import { SupportChat } from "@/components/support/support-chat";
 
 import { siteConfig } from "@/site.config";
 import { cn } from "@/lib/utils";
@@ -64,6 +65,7 @@ export default async function RootLayout({
             <Nav />
             {children}
             <Footer />
+            <SupportChat />
           </CartProvider>
         </ThemeProvider>
         <Analytics />

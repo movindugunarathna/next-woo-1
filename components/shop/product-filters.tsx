@@ -1,10 +1,10 @@
 "use client";
 
 import { useRouter, useSearchParams } from "next/navigation";
-import { useCallback, useTransition } from "react";
+import { useCallback, useEffect, useRef, useTransition } from "react";
 
 import type { ProductCategory, ProductTag } from "@/lib/woocommerce.d";
-import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import {
@@ -62,151 +62,175 @@ export function ProductFilters({
     [router, searchParams]
   );
 
+  // Debounce free-text inputs so a route push happens once the user pauses,
+  // not on every keystroke.
+  const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const debouncedUpdate = useCallback(
+    (updates: Record<string, string | undefined>) => {
+      if (debounceRef.current) clearTimeout(debounceRef.current);
+      debounceRef.current = setTimeout(() => updateFilters(updates), 400);
+    },
+    [updateFilters]
+  );
+
+  useEffect(() => {
+    return () => {
+      if (debounceRef.current) clearTimeout(debounceRef.current);
+    };
+  }, []);
+
   const clearFilters = () => {
     startTransition(() => {
       router.push("/shop");
     });
   };
 
-  const hasActiveFilters =
-    currentCategory ||
-    currentTag ||
-    currentSearch ||
-    currentMinPrice ||
-    currentMaxPrice;
+  const activeFilterCount = [
+    currentCategory,
+    currentTag,
+    currentSearch,
+    currentMinPrice,
+    currentMaxPrice,
+  ].filter(Boolean).length;
+
+  const pillClass = (isActive: boolean) =>
+    cn(
+      "shrink-0 whitespace-nowrap rounded-full border px-4 py-1.5 text-xs font-semibold transition-colors",
+      isActive
+        ? "border-[color:var(--brand-ink)] bg-[color:var(--brand-ink)] text-[color:var(--brand-on-accent)]"
+        : "border-[color:var(--brand-border)] text-[color:var(--brand-ink)] hover:border-[color:var(--brand-muted)]"
+    );
 
   return (
-    <div className="space-y-6">
-      {/* Search */}
-      <div className="space-y-2">
-        <Label htmlFor="search">Search</Label>
-        <Input
-          id="search"
-          type="search"
-          placeholder="Search products..."
-          defaultValue={currentSearch}
-          onChange={(e) => {
-            const value = e.target.value;
-            // Debounce search
-            const timeoutId = setTimeout(() => {
-              updateFilters({ search: value || undefined });
-            }, 300);
-            return () => clearTimeout(timeoutId);
-          }}
-        />
-      </div>
-
-      {/* Category */}
-      {categories.length > 0 && (
-        <div className="space-y-2">
-          <Label>Category</Label>
-          <Select
-            value={currentCategory || "all"}
-            onValueChange={(value) =>
-              updateFilters({ category: value === "all" ? undefined : value })
+    <div className="overflow-hidden rounded-2xl border border-[color:var(--brand-border)] bg-[color:var(--brand-surface)]">
+      {/* Controls row */}
+      <div className="flex flex-col gap-3 p-4 md:flex-row md:items-center">
+        <div className="md:w-64">
+          <Label htmlFor="search" className="sr-only">
+            Search products
+          </Label>
+          <Input
+            id="search"
+            type="search"
+            placeholder="Search products..."
+            defaultValue={currentSearch}
+            onChange={(e) =>
+              debouncedUpdate({ search: e.target.value || undefined })
             }
-          >
-            <SelectTrigger>
-              <SelectValue placeholder="All categories" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all">All categories</SelectItem>
-              {categories.map((category) => (
-                <SelectItem key={category.id} value={category.slug}>
-                  {category.name} ({category.count})
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
+          />
         </div>
-      )}
 
-      {/* Tags */}
-      {tags.length > 0 && (
-        <div className="space-y-2">
-          <Label>Tag</Label>
-          <Select
-            value={currentTag || "all"}
-            onValueChange={(value) =>
-              updateFilters({ tag: value === "all" ? undefined : value })
-            }
-          >
-            <SelectTrigger>
-              <SelectValue placeholder="All tags" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all">All tags</SelectItem>
-              {tags.map((tag) => (
-                <SelectItem key={tag.id} value={tag.slug}>
-                  {tag.name} ({tag.count})
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        </div>
-      )}
-
-      {/* Sort */}
-      <div className="space-y-2">
-        <Label>Sort by</Label>
-        <Select
-          value={currentSort || "default"}
-          onValueChange={(value) =>
-            updateFilters({ sort: value === "default" ? undefined : value })
-          }
-        >
-          <SelectTrigger>
-            <SelectValue placeholder="Default sorting" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="default">Default sorting</SelectItem>
-            <SelectItem value="popularity">Popularity</SelectItem>
-            <SelectItem value="rating">Average rating</SelectItem>
-            <SelectItem value="date">Latest</SelectItem>
-            <SelectItem value="price">Price: Low to High</SelectItem>
-            <SelectItem value="price-desc">Price: High to Low</SelectItem>
-          </SelectContent>
-        </Select>
-      </div>
-
-      {/* Price Range */}
-      <div className="space-y-2">
-        <Label>Price Range</Label>
-        <div className="flex gap-2">
+        <div className="flex items-center gap-2">
+          <span className="brand-kicker shrink-0">Price</span>
           <Input
             type="number"
             placeholder="Min"
             min={0}
             defaultValue={currentMinPrice}
-            onChange={(e) => updateFilters({ min_price: e.target.value || undefined })}
-            className="w-full"
+            onChange={(e) =>
+              debouncedUpdate({ min_price: e.target.value || undefined })
+            }
+            aria-label="Minimum price"
+            className="w-24"
           />
+          <span className="text-[color:var(--brand-muted)]">–</span>
           <Input
             type="number"
             placeholder="Max"
             min={0}
             defaultValue={currentMaxPrice}
-            onChange={(e) => updateFilters({ max_price: e.target.value || undefined })}
-            className="w-full"
+            onChange={(e) =>
+              debouncedUpdate({ max_price: e.target.value || undefined })
+            }
+            aria-label="Maximum price"
+            className="w-24"
           />
+        </div>
+
+        <div className="flex items-center gap-3 md:ml-auto">
+          <Select
+            value={currentSort || "default"}
+            onValueChange={(value) =>
+              updateFilters({ sort: value === "default" ? undefined : value })
+            }
+          >
+            <SelectTrigger className="w-full md:w-52" aria-label="Sort by">
+              <SelectValue placeholder="Default sorting" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="default">Default sorting</SelectItem>
+              <SelectItem value="popularity">Popularity</SelectItem>
+              <SelectItem value="rating">Average rating</SelectItem>
+              <SelectItem value="date">Latest</SelectItem>
+              <SelectItem value="price">Price: Low to High</SelectItem>
+              <SelectItem value="price-desc">Price: High to Low</SelectItem>
+            </SelectContent>
+          </Select>
+
+          {activeFilterCount > 0 && (
+            <button
+              type="button"
+              onClick={clearFilters}
+              disabled={isPending}
+              className="shrink-0 whitespace-nowrap text-xs font-semibold underline underline-offset-4 disabled:opacity-50"
+            >
+              Clear all ({activeFilterCount})
+            </button>
+          )}
         </div>
       </div>
 
-      {/* Clear Filters */}
-      {hasActiveFilters && (
-        <Button
-          variant="outline"
-          onClick={clearFilters}
-          className="w-full"
-          disabled={isPending}
-        >
-          Clear Filters
-        </Button>
+      {/* Taxonomy row — scrolls sideways instead of wrapping into a tall block */}
+      {(categories.length > 0 || tags.length > 0) && (
+        <div className="flex items-center gap-2 overflow-x-auto border-t border-[color:var(--brand-border)] px-4 py-3 no-scrollbar">
+          {categories.length > 0 && (
+            <>
+              <button
+                type="button"
+                onClick={() => updateFilters({ category: undefined })}
+                className={pillClass(!currentCategory)}
+              >
+                All
+              </button>
+              {categories.map((category) => (
+                <button
+                  key={category.id}
+                  type="button"
+                  onClick={() => updateFilters({ category: category.slug })}
+                  className={pillClass(currentCategory === category.slug)}
+                >
+                  {category.name}
+                  <span className="ml-1.5 opacity-60">{category.count}</span>
+                </button>
+              ))}
+            </>
+          )}
+
+          {categories.length > 0 && tags.length > 0 && (
+            <span className="mx-1 h-5 w-px shrink-0 bg-[color:var(--brand-border)]" />
+          )}
+
+          {tags.map((tag) => {
+            const isActive = currentTag === tag.slug;
+            return (
+              <button
+                key={tag.id}
+                type="button"
+                onClick={() =>
+                  updateFilters({ tag: isActive ? undefined : tag.slug })
+                }
+                className={pillClass(isActive)}
+              >
+                #{tag.name}
+              </button>
+            );
+          })}
+        </div>
       )}
 
       {isPending && (
-        <div className="text-sm text-muted-foreground text-center">
-          Loading...
+        <div className="border-t border-[color:var(--brand-border)] px-4 py-2 text-xs text-[color:var(--brand-muted)]">
+          Updating results...
         </div>
       )}
     </div>

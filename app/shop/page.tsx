@@ -130,73 +130,69 @@ export default async function ShopPage({ searchParams }: ShopPageProps) {
             </p>
           </Prose>
 
-          <div className="grid lg:grid-cols-[280px_1fr] gap-8">
-            {/* Sidebar Filters */}
-            <aside className="space-y-6">
-              <ProductFilters
-                categories={categories}
-                tags={tags}
-                currentCategory={category}
-                currentTag={tag}
-                currentSearch={search}
-                currentSort={sort}
-                currentMinPrice={min_price}
-                currentMaxPrice={max_price}
-              />
-            </aside>
+          {/* Horizontal filter bar above the grid */}
+          <ProductFilters
+            categories={categories}
+            tags={tags}
+            currentCategory={category}
+            currentTag={tag}
+            currentSearch={search}
+            currentSort={sort}
+            currentMinPrice={min_price}
+            currentMaxPrice={max_price}
+          />
 
-            {/* Product Grid */}
-            <div className="space-y-8">
-              <ProductGrid products={products} columns={3} />
+          {/* Product Grid */}
+          <div className="space-y-8">
+            <ProductGrid products={products} columns={4} />
 
-              {totalPages > 1 && (
-                <div className="flex justify-center items-center py-8">
-                  <Pagination>
-                    <PaginationContent>
-                      {page > 1 && (
-                        <PaginationItem>
-                          <PaginationPrevious
-                            href={createPaginationUrl(page - 1)}
-                          />
-                        </PaginationItem>
-                      )}
+            {totalPages > 1 && (
+              <div className="flex justify-center items-center py-8">
+                <Pagination>
+                  <PaginationContent>
+                    {page > 1 && (
+                      <PaginationItem>
+                        <PaginationPrevious
+                          href={createPaginationUrl(page - 1)}
+                        />
+                      </PaginationItem>
+                    )}
 
-                      {Array.from({ length: totalPages }, (_, i) => i + 1)
-                        .filter((pageNum) => {
-                          return (
-                            pageNum === 1 ||
-                            pageNum === totalPages ||
-                            Math.abs(pageNum - page) <= 1
-                          );
-                        })
-                        .map((pageNum, index, array) => {
-                          const showEllipsis =
-                            index > 0 && pageNum - array[index - 1] > 1;
-                          return (
-                            <div key={pageNum} className="flex items-center">
-                              {showEllipsis && <span className="px-2">...</span>}
-                              <PaginationItem>
-                                <PaginationLink
-                                  href={createPaginationUrl(pageNum)}
-                                  isActive={pageNum === page}
-                                >
-                                  {pageNum}
-                                </PaginationLink>
-                              </PaginationItem>
-                            </div>
-                          );
-                        })}
+                    {Array.from({ length: totalPages }, (_, i) => i + 1)
+                      .filter((pageNum) => {
+                        return (
+                          pageNum === 1 ||
+                          pageNum === totalPages ||
+                          Math.abs(pageNum - page) <= 1
+                        );
+                      })
+                      .map((pageNum, index, array) => {
+                        const showEllipsis =
+                          index > 0 && pageNum - array[index - 1] > 1;
+                        return (
+                          <div key={pageNum} className="flex items-center">
+                            {showEllipsis && <span className="px-2">...</span>}
+                            <PaginationItem>
+                              <PaginationLink
+                                href={createPaginationUrl(pageNum)}
+                                isActive={pageNum === page}
+                              >
+                                {pageNum}
+                              </PaginationLink>
+                            </PaginationItem>
+                          </div>
+                        );
+                      })}
 
-                      {page < totalPages && (
-                        <PaginationItem>
-                          <PaginationNext href={createPaginationUrl(page + 1)} />
-                        </PaginationItem>
-                      )}
-                    </PaginationContent>
-                  </Pagination>
-                </div>
-              )}
-            </div>
+                    {page < totalPages && (
+                      <PaginationItem>
+                        <PaginationNext href={createPaginationUrl(page + 1)} />
+                      </PaginationItem>
+                    )}
+                  </PaginationContent>
+                </Pagination>
+              </div>
+            )}
           </div>
         </div>
       </Container>

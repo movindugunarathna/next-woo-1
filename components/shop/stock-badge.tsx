@@ -20,25 +20,23 @@ export function StockBadge({ product, className }: StockBadgeProps) {
 
   const isBackorder = product.stock_status === "onbackorder";
 
-  const dotColor = !inStock
-    ? "bg-red-500"
+  // Monochrome states: the dot carries the signal through fill vs. outline
+  // and the copy itself already names the state, so no hue is needed.
+  const dotStyle = !inStock
+    ? "border border-[color:var(--brand-muted)] bg-transparent"
     : isBackorder
-      ? "bg-blue-500"
+      ? "bg-[color:var(--brand-muted)]"
       : isLowStock
-        ? "bg-amber-500"
-        : "bg-emerald-500";
+        ? "bg-[color:var(--brand-ink)] ring-2 ring-[color:var(--brand-border)]"
+        : "bg-[color:var(--brand-ink)]";
 
-  const textColor = !inStock
-    ? "text-red-600 dark:text-red-400"
-    : isBackorder
-      ? "text-blue-600 dark:text-blue-400"
-      : isLowStock
-        ? "text-amber-600 dark:text-amber-400"
-        : "text-emerald-600 dark:text-emerald-400";
+  const textStyle = inStock
+    ? "text-[color:var(--brand-ink)]"
+    : "text-[color:var(--brand-muted)]";
 
   return (
-    <div className={cn("flex items-center gap-2 text-sm font-medium", textColor, className)}>
-      <span className={cn("h-1.5 w-1.5 rounded-full", dotColor)} />
+    <div className={cn("flex items-center gap-2 text-sm font-medium", textStyle, className)}>
+      <span className={cn("h-1.5 w-1.5 shrink-0 rounded-full", dotStyle)} />
       {message}
     </div>
   );

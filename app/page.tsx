@@ -114,13 +114,15 @@ export default async function Home() {
 
       <main>
         {/* Full-bleed hero banner */}
-        <section className="home-reveal relative flex min-h-[460px] w-full items-end overflow-hidden pb-10 sm:min-h-[520px] sm:pb-14 lg:h-[62vh] lg:max-h-[600px] lg:pb-16">
+        {/* Height is viewport-driven minus the nav, promo bar, and enough room
+            for the next section's heading to stay in view on load. */}
+        <section className="home-reveal relative flex h-[calc(100svh-20rem)] min-h-[400px] w-full items-end overflow-hidden pb-8 sm:min-h-[440px] sm:pb-12 lg:min-h-[480px] lg:max-h-[720px] lg:pb-14">
           <Image
             src={heroImage.src}
             alt={heroImage.alt}
             fill
             priority
-            className="object-cover"
+            className="object-cover object-[center_35%]"
             sizes="100vw"
           />
           <div className="brand-hero-scrim absolute inset-0" />
@@ -151,7 +153,7 @@ export default async function Home() {
         </section>
 
         <Section className="py-0">
-          <Container className="max-w-6xl space-y-14 px-4 py-8 sm:px-6 md:space-y-20 md:py-12 lg:px-10">
+          <Container className="max-w-6xl space-y-14 px-4 pb-8 pt-5 sm:px-6 md:space-y-20 md:pb-12 md:pt-6 lg:px-10">
             {/* Trust strip
             <section
               className="home-reveal grid gap-3 sm:grid-cols-2 lg:grid-cols-4"

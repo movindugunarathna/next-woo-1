@@ -34,8 +34,8 @@ function SuccessContent() {
 
   return (
     <div className="flex flex-col items-center justify-center py-12 space-y-6 text-center">
-      <div className="h-24 w-24 rounded-full bg-green-100 flex items-center justify-center">
-        <CheckCircle className="h-12 w-12 text-green-600" />
+      <div className="flex h-24 w-24 items-center justify-center rounded-full bg-[color:var(--brand-ink)]">
+        <CheckCircle className="h-12 w-12 text-[color:var(--brand-on-accent)]" />
       </div>
 
       <div className="space-y-2">

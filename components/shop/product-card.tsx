@@ -87,7 +87,7 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
         {/* Rating */}
         {product.rating_count > 0 && (
           <div className="flex items-center gap-1 text-sm text-muted-foreground">
-            <span className="text-yellow-500">★</span>
+            <span className="text-[color:var(--brand-ink)]">★</span>
             <span>{product.average_rating}</span>
             <span>({product.rating_count})</span>
           </div>

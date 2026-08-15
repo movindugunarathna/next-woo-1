@@ -113,7 +113,7 @@ export function VariationSelector({
                       className={cn(
                         "rounded-full border px-4 py-2 text-sm font-medium transition-colors",
                         isSelected
-                          ? "border-[color:var(--brand-accent)] bg-[color:var(--brand-accent)] text-[#fffaf2]"
+                          ? "border-[color:var(--brand-accent)] bg-[color:var(--brand-accent)] text-[color:var(--brand-on-accent)]"
                           : "border-[color:var(--brand-border)] bg-transparent text-[color:var(--brand-ink)] hover:border-[color:var(--brand-muted)]",
                         !isAvailable && "cursor-not-allowed opacity-40 line-through"
                       )}

@@ -8,59 +8,65 @@
  * colors, so the storefront reads as one consistent design across
  * home, shop, cart, checkout, and account.
  *
- * Palette: warm Ceylon-ivory surfaces, near-black ink, clay/terracotta
- * as the signature accent, and a muted olive as the secondary accent for
- * "new" tags — inspired by the sun-warmed neutrals and confident
- * black/white typography common across local fashion storefronts.
+ * Palette: strictly monochrome. Pure white paper, near-black ink, and a
+ * neutral grey scale in between. There is no hue anywhere — the accent is
+ * simply ink itself, so emphasis comes from contrast, weight, and inversion
+ * rather than color. Dark mode is the same scale flipped.
  */
 
 @layer base {
     :root {
-        /* Surfaces */
-        --brand-bg: #f7f2ea;
-        --brand-bg-alt: #efe4d3;
-        --brand-surface: #fffdf9;
-        --brand-card: #fffaf2;
+        /* Surfaces — page sits a shade below cards so panels still read as
+           raised without any hue to separate them. */
+        --brand-bg: #fbfbfb;
+        --brand-bg-alt: #f0f0f0;
+        --brand-surface: #ffffff;
+        --brand-card: #f5f5f5;
 
         /* Text */
-        --brand-ink: #17140f;
-        --brand-muted: #6b6154;
+        --brand-ink: #0a0a0a;
+        --brand-muted: #6e6e6e;
 
         /* Structure */
-        --brand-border: #e1d3bf;
+        --brand-border: #e2e2e2;
 
-        /* Signature accent — terracotta clay */
-        --brand-accent: #b5602e;
-        --brand-accent-strong: #8a431c;
-        --brand-accent-soft: #f1ded0;
+        /* Signature accent — ink itself; emphasis via contrast, not hue */
+        --brand-accent: #0a0a0a;
+        --brand-accent-strong: #000000;
+        --brand-accent-soft: #ededed;
 
-        /* Secondary accent — muted olive, used sparingly for "new" tags */
-        --brand-secondary: #46503c;
-        --brand-secondary-soft: #e3e8da;
+        /* Secondary accent — mid grey, used sparingly for "new" tags */
+        --brand-secondary: #4a4a4a;
+        --brand-secondary-soft: #ededed;
 
         /* Sale / discount */
-        --brand-sale: #8a2f2a;
+        --brand-sale: #0a0a0a;
+
+        /* Copy that sits on an accent fill */
+        --brand-on-accent: #ffffff;
     }
 
     .dark {
-        --brand-bg: #121009;
-        --brand-bg-alt: #1a1610;
-        --brand-surface: #1c1712;
-        --brand-card: #241d16;
+        --brand-bg: #070707;
+        --brand-bg-alt: #121212;
+        --brand-surface: #0d0d0d;
+        --brand-card: #161616;
 
-        --brand-ink: #f8f2e9;
-        --brand-muted: #c7b9a4;
+        --brand-ink: #fafafa;
+        --brand-muted: #a1a1a1;
 
-        --brand-border: #3a2f22;
+        --brand-border: #2a2a2a;
 
-        --brand-accent: #e2a274;
-        --brand-accent-strong: #f0bb90;
-        --brand-accent-soft: #3a2a1e;
+        --brand-accent: #fafafa;
+        --brand-accent-strong: #ffffff;
+        --brand-accent-soft: #1f1f1f;
 
-        --brand-secondary: #9db588;
-        --brand-secondary-soft: #2c3324;
+        --brand-secondary: #c4c4c4;
+        --brand-secondary-soft: #1f1f1f;
 
-        --brand-sale: #d97a72;
+        --brand-sale: #fafafa;
+
+        --brand-on-accent: #070707;
     }
 }
 
@@ -69,8 +75,8 @@
 
     .brand-page {
         background:
-            radial-gradient(1200px 420px at 15% -20%, color-mix(in oklab, var(--brand-bg-alt), transparent 35%), transparent 70%),
-            radial-gradient(900px 320px at 95% 0%, color-mix(in oklab, var(--brand-bg-alt), transparent 50%), transparent 75%),
+            radial-gradient(1200px 420px at 15% -20%, color-mix(in oklab, var(--brand-bg-alt), transparent 55%), transparent 70%),
+            radial-gradient(900px 320px at 95% 0%, color-mix(in oklab, var(--brand-bg-alt), transparent 65%), transparent 75%),
             var(--brand-bg);
         color: var(--brand-ink);
     }
@@ -116,14 +122,17 @@
     }
 
     .brand-link {
-        color: var(--brand-accent-strong);
+        color: var(--brand-ink);
+        text-decoration: underline;
+        text-decoration-thickness: 1px;
+        text-decoration-color: var(--brand-border);
         text-underline-offset: 0.3rem;
-        transition: color 180ms ease;
+        transition: text-decoration-color 180ms ease, color 180ms ease;
     }
 
     .brand-link:hover {
-        color: var(--brand-accent);
-        text-decoration: underline;
+        color: var(--brand-ink);
+        text-decoration-color: var(--brand-ink);
     }
 
     /* ---------- Chips / badges ---------- */
@@ -140,10 +149,13 @@
         padding: 0.55rem 0.85rem;
     }
 
+    /* Monochrome badge pair: "new" reads as a quiet outline, "sale" as a
+       solid ink chip, so the two stay distinguishable without hue. */
     .brand-badge-new {
         display: inline-flex;
         align-items: center;
         border-radius: 999px;
+        border: 1px solid var(--brand-border);
         background: var(--brand-secondary-soft);
         color: var(--brand-secondary);
         font-size: 0.65rem;
@@ -157,8 +169,8 @@
         display: inline-flex;
         align-items: center;
         border-radius: 999px;
-        background: color-mix(in oklab, var(--brand-sale), transparent 88%);
-        color: var(--brand-sale);
+        background: var(--brand-sale);
+        color: var(--brand-on-accent);
         font-size: 0.65rem;
         font-weight: 700;
         text-transform: uppercase;
@@ -170,12 +182,13 @@
 
     .brand-btn-primary {
         background: var(--brand-accent);
-        color: #fffaf2;
-        transition: background-color 180ms ease;
+        color: var(--brand-on-accent);
+        transition: background-color 180ms ease, opacity 180ms ease;
     }
 
     .brand-btn-primary:hover {
         background: var(--brand-accent-strong);
+        opacity: 0.88;
     }
 
     .brand-btn-outline {
@@ -233,12 +246,12 @@
     }
 
     .brand-image-overlay {
-        background: linear-gradient(to top, color-mix(in oklab, #000, transparent 8%), transparent 55%);
+        background: linear-gradient(to top, rgba(0, 0, 0, 0.92), transparent 55%);
     }
 
-    /* Full-bleed hero scrim — flat dark wash so white copy stays legible over any photo */
+    /* Full-bleed hero scrim — flat neutral wash so white copy stays legible over any photo */
     .brand-hero-scrim {
-        background: linear-gradient(180deg, rgba(10, 8, 5, 0.55) 0%, rgba(10, 8, 5, 0.35) 45%, rgba(10, 8, 5, 0.62) 100%);
+        background: linear-gradient(180deg, rgba(0, 0, 0, 0.55) 0%, rgba(0, 0, 0, 0.35) 45%, rgba(0, 0, 0, 0.62) 100%);
     }
 
     /* ---------- Misc ---------- */
