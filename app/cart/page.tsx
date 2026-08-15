@@ -5,7 +5,7 @@ import Image from "next/image";
 import { ShoppingCart, Plus, Minus, Trash2, ArrowLeft } from "lucide-react";
 
 import { useCart } from "@/components/shop/cart-provider";
-import { formatPrice } from "@/lib/woocommerce";
+import { formatPrice, parsePriceValue } from "@/lib/woocommerce";
 import { Section, Container } from "@/components/craft";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
@@ -159,7 +159,7 @@ export default function CartPage() {
                   <div className="text-right">
                     <p className="font-bold">
                       {formatPrice(
-                        (parseFloat(item.price) * item.quantity).toString()
+                        (parsePriceValue(item.price) * item.quantity).toString()
                       )}
                     </p>
                   </div>
@@ -180,14 +180,14 @@ export default function CartPage() {
                     <span>{formatPrice(cart.totals.subtotal)}</span>
                   </div>
 
-                  {parseFloat(cart.totals.shipping) > 0 && (
+                  {parsePriceValue(cart.totals.shipping) > 0 && (
                     <div className="flex justify-between">
                       <span className="text-muted-foreground">Shipping</span>
                       <span>{formatPrice(cart.totals.shipping)}</span>
                     </div>
                   )}
 
-                  {parseFloat(cart.totals.tax) > 0 && (
+                  {parsePriceValue(cart.totals.tax) > 0 && (
                     <div className="flex justify-between">
                       <span className="text-muted-foreground">Tax</span>
                       <span>{formatPrice(cart.totals.tax)}</span>

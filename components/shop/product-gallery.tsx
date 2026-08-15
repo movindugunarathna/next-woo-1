@@ -16,7 +16,7 @@ export function ProductGallery({ images, productName }: ProductGalleryProps) {
 
   if (!images || images.length === 0) {
     return (
-      <div className="aspect-square bg-muted rounded-lg flex items-center justify-center text-muted-foreground">
+      <div className="flex aspect-square items-center justify-center rounded-2xl border border-slate-200 bg-slate-100 text-slate-500">
         No image available
       </div>
     );
@@ -27,12 +27,12 @@ export function ProductGallery({ images, productName }: ProductGalleryProps) {
   return (
     <div className="flex flex-col gap-4">
       {/* Main Image */}
-      <div className="relative aspect-square overflow-hidden rounded-lg border bg-muted">
+      <div className="relative aspect-square overflow-hidden rounded-2xl border border-slate-200 bg-white">
         <Image
           src={selectedImage.src}
           alt={selectedImage.alt || productName}
           fill
-          className="object-cover"
+          className="object-cover transition-transform duration-500 hover:scale-105"
           sizes="(max-width: 768px) 100vw, 50vw"
           priority
         />
@@ -46,10 +46,10 @@ export function ProductGallery({ images, productName }: ProductGalleryProps) {
               key={image.id}
               onClick={() => setSelectedIndex(index)}
               className={cn(
-                "relative w-20 h-20 flex-shrink-0 rounded-md overflow-hidden border-2 transition-all",
+                "relative h-20 w-20 flex-shrink-0 overflow-hidden rounded-xl border-2 bg-white transition-all",
                 selectedIndex === index
-                  ? "border-primary"
-                  : "border-transparent hover:border-muted-foreground/50"
+                  ? "border-slate-900"
+                  : "border-slate-200 hover:border-slate-400"
               )}
             >
               <Image

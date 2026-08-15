@@ -9,6 +9,8 @@ import { Footer } from "@/components/layout/footer";
 
 import { siteConfig } from "@/site.config";
 import { cn } from "@/lib/utils";
+import { getStorePriceFormatFromWoo } from "@/lib/woocommerce";
+import { setStorePriceFormat } from "@/lib/store-price-format";
 
 import type { Metadata } from "next";
 
@@ -29,14 +31,27 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const storePriceFormat = await getStorePriceFormatFromWoo();
+  setStorePriceFormat(storePriceFormat);
+  const storePriceFormatScript = JSON.stringify(storePriceFormat).replace(
+    /</g,
+    "\\u003c"
+  );
+
   return (
     <html lang="en" suppressHydrationWarning>
-      <head />
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `window.__NEXT_WOO_STORE_PRICE_FORMAT__=${storePriceFormatScript};`,
+          }}
+        />
+      </head>
       <body className={cn("min-h-screen font-sans antialiased", font.variable)}>
         <ThemeProvider
           attribute="class"

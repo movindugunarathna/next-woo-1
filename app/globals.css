@@ -103,6 +103,37 @@
     /* Firefox */
 }
 
+@keyframes home-reveal {
+    from {
+        opacity: 0;
+        transform: translateY(18px) scale(0.99);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+@keyframes home-float {
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-7px);
+    }
+}
+
+@layer utilities {
+    .home-reveal {
+        animation: home-reveal 720ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    }
+
+    .home-float {
+        animation: home-float 6s ease-in-out infinite;
+    }
+}
+
 @layer base {
     :root {
         --background: 0 0% 100%;

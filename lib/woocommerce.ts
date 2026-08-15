@@ -15,6 +15,13 @@ import type {
   ShippingMethod,
   PaymentGateway,
 } from "./woocommerce.d";
+import {
+  FALLBACK_STORE_CURRENCY,
+  FALLBACK_STORE_LOCALE,
+  getStorePriceFormat,
+  setStorePriceFormat,
+  type StorePriceFormat,
+} from "./store-price-format";
 
 // Configuration
 const baseUrl = process.env.WORDPRESS_URL;
@@ -55,6 +62,39 @@ export interface WooCommerceResponse<T> {
 
 const USER_AGENT = "Next.js WooCommerce Client";
 const CACHE_TTL = 3600; // 1 hour
+
+const CURRENCY_LOCALE_MAP: Record<string, string> = {
+  USD: "en-US",
+  EUR: "en-IE",
+  GBP: "en-GB",
+  CAD: "en-CA",
+  AUD: "en-AU",
+  NZD: "en-NZ",
+  CHF: "de-CH",
+  SEK: "sv-SE",
+  NOK: "nb-NO",
+  DKK: "da-DK",
+  PLN: "pl-PL",
+  CZK: "cs-CZ",
+  HUF: "hu-HU",
+  JPY: "ja-JP",
+  CNY: "zh-CN",
+  SGD: "en-SG",
+  HKD: "zh-HK",
+  INR: "en-IN",
+  LKR: "en-LK",
+  PKR: "en-PK",
+  BDT: "bn-BD",
+  AED: "ar-AE",
+  SAR: "ar-SA",
+  ZAR: "en-ZA",
+  BRL: "pt-BR",
+  MXN: "es-MX",
+};
+
+function inferLocaleFromCurrency(currency: string): string {
+  return CURRENCY_LOCALE_MAP[currency] || FALLBACK_STORE_LOCALE;
+}
 
 // Build authenticated URL for WooCommerce REST API
 function buildWooCommerceUrl(
@@ -696,28 +736,90 @@ export async function getEnabledPaymentGateways(): Promise<PaymentGateway[]> {
   return gateways.filter((gateway) => gateway.enabled);
 }
 
+interface WooCommerceSetting {
+  id?: string;
+  value?: unknown;
+}
+
+export async function getStorePriceFormatFromWoo(): Promise<StorePriceFormat> {
+  const settings = await woocommerceFetchGraceful<WooCommerceSetting[]>(
+    "settings/general",
+    [],
+    undefined,
+    ["woocommerce", "settings", "store-format"]
+  );
+
+  const currencySetting = settings.find(
+    (setting) => setting.id === "woocommerce_currency"
+  );
+  const currencyValue =
+    typeof currencySetting?.value === "string" ? currencySetting.value : "";
+  const currency =
+    currencyValue.trim().toUpperCase() || FALLBACK_STORE_CURRENCY;
+
+  const resolved: StorePriceFormat = {
+    currency,
+    locale: inferLocaleFromCurrency(currency),
+  };
+
+  return setStorePriceFormat(resolved);
+}
+
 // ============================================================================
 // Utilities
 // ============================================================================
 
 export function formatPrice(
   price: string | number,
-  currency: string = "USD"
+  currency?: string,
+  locale?: string
 ): string {
-  const numericPrice = typeof price === "string" ? parseFloat(price) : price;
+  const storeFormat = getStorePriceFormat();
+  const numericPrice = parsePriceValue(price);
+  const normalizedCurrency = (currency || storeFormat.currency || FALLBACK_STORE_CURRENCY)
+    .trim()
+    .toUpperCase();
+  const resolvedLocale =
+    locale || storeFormat.locale || inferLocaleFromCurrency(normalizedCurrency);
 
-  return new Intl.NumberFormat("en-US", {
-    style: "currency",
-    currency,
-  }).format(numericPrice);
+  try {
+    return new Intl.NumberFormat(resolvedLocale, {
+      style: "currency",
+      currency: normalizedCurrency,
+      currencyDisplay: "symbol",
+    }).format(numericPrice);
+  } catch {
+    return new Intl.NumberFormat(FALLBACK_STORE_LOCALE, {
+      style: "currency",
+      currency: FALLBACK_STORE_CURRENCY,
+    }).format(numericPrice);
+  }
+}
+
+export function parsePriceValue(
+  price: string | number | null | undefined
+): number {
+  if (typeof price === "number") {
+    return Number.isFinite(price) ? price : 0;
+  }
+
+  if (!price) return 0;
+
+  const normalized = String(price)
+    .replace(/<[^>]*>/g, "")
+    .replace(/[^0-9.,-]/g, "")
+    .replace(/,/g, "");
+  const parsed = parseFloat(normalized);
+
+  return Number.isFinite(parsed) ? parsed : 0;
 }
 
 export function calculateDiscountPercentage(
   regularPrice: string,
   salePrice: string
 ): number {
-  const regular = parseFloat(regularPrice);
-  const sale = parseFloat(salePrice);
+  const regular = parsePriceValue(regularPrice);
+  const sale = parsePriceValue(salePrice);
 
   if (!regular || !sale || regular <= sale) return 0;
 

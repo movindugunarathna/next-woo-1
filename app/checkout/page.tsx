@@ -7,7 +7,7 @@ import Image from "next/image";
 import { ArrowLeft, Loader2 } from "lucide-react";
 
 import { useCart } from "@/components/shop/cart-provider";
-import { formatPrice } from "@/lib/woocommerce";
+import { formatPrice, parsePriceValue } from "@/lib/woocommerce";
 import { Section, Container } from "@/components/craft";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -360,7 +360,7 @@ export default function CheckoutPage() {
                         </div>
                         <p className="text-sm font-medium">
                           {formatPrice(
-                            (parseFloat(item.price) * item.quantity).toString()
+                            (parsePriceValue(item.price) * item.quantity).toString()
                           )}
                         </p>
                       </div>

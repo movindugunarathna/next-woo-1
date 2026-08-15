@@ -4,7 +4,7 @@ import { useState } from "react";
 import { ShoppingCart, Plus, Minus, Loader2 } from "lucide-react";
 
 import type { Product, ProductVariation } from "@/lib/woocommerce.d";
-import { isProductInStock } from "@/lib/woocommerce";
+import { parsePriceValue } from "@/lib/woocommerce";
 import { useCart } from "@/components/shop/cart-provider";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -44,12 +44,16 @@ export function AddToCartButton({
     setIsAdding(true);
 
     try {
+      const rawPrice =
+        variation?.price || product.price || product.sale_price || product.regular_price;
+      const normalizedPrice = parsePriceValue(rawPrice).toFixed(2);
+
       await addItem({
         productId: product.id,
         variationId: variation?.id,
         quantity,
         name: product.name + (variation ? ` - ${variation.attributes.map((a) => a.option).join(", ")}` : ""),
-        price: variation?.price || product.price,
+        price: normalizedPrice,
         image: (variation?.image || product.images[0])?.src,
         attributes: variation?.attributes,
       });

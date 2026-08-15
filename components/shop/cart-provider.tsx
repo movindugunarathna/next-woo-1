@@ -10,6 +10,7 @@ import {
 } from "react";
 
 import type { CartItem, Cart, CartTotals, ProductDefaultAttribute } from "@/lib/woocommerce.d";
+import { parsePriceValue } from "@/lib/woocommerce";
 
 const CART_STORAGE_KEY = "woo-cart";
 
@@ -31,7 +32,7 @@ const CartContext = createContext<CartContextType | undefined>(undefined);
 
 function calculateTotals(items: CartItem[]): CartTotals {
   const subtotal = items.reduce((sum, item) => {
-    return sum + parseFloat(item.price) * item.quantity;
+    return sum + parsePriceValue(item.price) * item.quantity;
   }, 0);
 
   const itemCount = items.reduce((sum, item) => sum + item.quantity, 0);

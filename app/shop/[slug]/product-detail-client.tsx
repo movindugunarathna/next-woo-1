@@ -32,7 +32,7 @@ export function ProductDetailClient({
   const isOnSale = selectedVariation?.on_sale ?? product.on_sale;
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 rounded-2xl border border-slate-200 bg-slate-50 p-4">
       {/* Variation Selector */}
       <VariationSelector
         product={product}
@@ -42,7 +42,7 @@ export function ProductDetailClient({
 
       {/* Updated Price Display */}
       {selectedVariation && (
-        <div className="space-y-2">
+        <div className="space-y-2 rounded-xl border border-slate-200 bg-white px-4 py-3">
           <PriceDisplay
             price={displayPrice}
             regularPrice={displayRegularPrice}
