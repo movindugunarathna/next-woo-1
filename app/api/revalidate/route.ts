@@ -9,6 +9,42 @@ export const maxDuration = 30;
  * and revalidates the entire site
  */
 
+// The repo ships two incompatible plugin versions (plugin/next-revalidate
+// sends { contentType, contentId }, wordpress/next-revalidate sends
+// { type, data: { id, taxonomy, type } }) - normalize both shapes so
+// revalidation works regardless of which one is installed on WordPress.
+function normalizeWebhookPayload(
+  body: Record<string, any>
+): { contentType: string | undefined; contentId: string | number | undefined } {
+  if (body.contentType) {
+    return { contentType: body.contentType, contentId: body.contentId };
+  }
+
+  const { type, data } = body;
+
+  if (type === "post") {
+    return { contentType: data?.type, contentId: data?.id };
+  }
+
+  if (type === "term") {
+    const taxonomy = data?.taxonomy;
+    const taxonomyMap: Record<string, string> = {
+      category: "category",
+      post_tag: "tag",
+    };
+    return {
+      contentType: taxonomyMap[taxonomy] ?? taxonomy,
+      contentId: data?.id,
+    };
+  }
+
+  if (type === "test") {
+    return { contentType: "test", contentId: undefined };
+  }
+
+  return { contentType: undefined, contentId: undefined };
+}
+
 export async function POST(request: NextRequest) {
   try {
     const requestBody = await request.json();
@@ -22,7 +58,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const { contentType, contentId } = requestBody;
+    const { contentType, contentId } = normalizeWebhookPayload(requestBody);
 
     if (!contentType) {
       return NextResponse.json(
